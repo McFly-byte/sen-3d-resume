@@ -1,151 +1,111 @@
 import { motion } from 'framer-motion'
-import { ZooopLogo } from './ZooopLogo'
-import { SOCIAL_ICONS } from './SocialIcons'
 import { FOCUS_POINTS } from '../data/focusPoints'
 
-const SOCIAL_LINKS = [
-  {
-    id: 'douyin',
-    label: '抖音',
-    href: 'https://www.douyin.com/user/MS4wLjABAAAAlmQDgHf0NlbsjrfWENm8LyrIikxSRRq7mzlzQSIStQJkV7Ju52B6A55zw5TUDU5d',
-  },
-  {
-    id: 'bilibili',
-    label: 'B站',
-    href: 'https://space.bilibili.com/275344092?spm_id_from=333.937.0.0',
-  },
-  {
-    id: 'xiaohongshu',
-    label: '小红书',
-    href: 'https://www.xiaohongshu.com/user/profile/5ceba8c8000000000502fd69',
-  },
-]
-
-// 履历数据（双语）。英文为译稿，可按需润色。
-interface ResumeGroup {
-  heading?: string
-  logo?: string
-  logoImg?: string
-  sub?: string
-  link?: string
-  items?: string[]
-  links?: { id: string; label: string; href: string }[]
-}
 interface ResumeEntry {
   period: string
   place: string
-  role?: string
-  logo?: { src: string; alt: string }
-  points?: string[]
-  groups?: ResumeGroup[]
+  role: string
+  points: string[]
 }
+
 const RESUME: Record<'en' | 'zh', { title: string; entries: ResumeEntry[] }> = {
-  en: {
-    title: 'Résumé',
+  zh: {
+    title: '经历',
     entries: [
       {
-        period: '2013 – 2017',
-        place: 'Sun Yat-sen University',
-        role: 'B.S. in Software Engineering',
+        period: '2019.09 - 2023.06',
+        place: '南京理工大学',
+        role: '计算机科学与技术 · 本科',
+        points: ['GPA 3.56 / 4.0，专业前 30%', '获校一、二等奖学金'],
       },
       {
-        period: '2017 – 2020',
-        place: 'HOTSAR Studio · Shanghai',
-        role: 'Co-founder',
-        logo: { src: `${import.meta.env.BASE_URL}images/hotsar.jpg`, alt: 'HOTSAR' },
+        period: '2024.09 - 2027.06',
+        place: '哈尔滨工业大学',
+        role: '计算学部 · 电子信息硕士',
+        points: ['GPA 3.72 / 4.0，专业前 20%', '校二等奖学金 · 优秀研究生会干事'],
+      },
+      {
+        period: '2025.04 - 2025.08',
+        place: 'PolyFlow 建材智能计价系统',
+        role: '后端开发 · Java / Spring Boot',
         points: [
-          'Co-founder · team of 20+',
-          'Clients: Alibaba brands, Tencent, NetEase, DiDi, China Resources, McDonald’s…',
-          'Work: development / creative direction / animation / team management',
+          '搭建 MinIO 分片并发上传、断点续传与后端合并流水线',
+          '使用 Apache POI 流式解析大体量 Excel，降低内存峰值',
+          '以 RabbitMQ 异步解析，并用 Redis Pub/Sub + WebSocket 推送进度',
         ],
       },
       {
-        period: '2020 – 2025',
-        place: 'Bad Printer Studio · Shenzhen',
-        role: 'Founder',
-        logo: { src: `${import.meta.env.BASE_URL}images/bp.png`, alt: 'Bad Printer Studio' },
+        period: '2025.12 - 2026.03',
+        place: 'Shopee',
+        role: 'OPA 后端开发实习',
         points: [
-          'Founder · team of 14',
-          'Clients: Honor of Kings / Trip.com / ByteDance / Kuaishou / VIVO / Tecno / Xiaomi / IM Motors…',
-          'Work: team management / creative direction / animation / development',
+          '为千万级佣金状态事件设计 Redis 分片延迟队列，治理大 Key 与慢查询',
+          '实现 DB、Redis、Kafka 间的冷热数据三级分流与幂等处理',
+          '设计双写扩容、灰度对账和运维接口，保障上线可控性',
         ],
       },
       {
-        period: '2025 – Now',
-        place: 'Content Creator',
-        groups: [
-          {
-            heading: '小郑还挺忙',
-            logoImg: `${import.meta.env.BASE_URL}images/buzyzheng.png`,
-            sub: 'tech-DIY creator',
-            items: ['120K on Douyin · 87K on Bilibili · 23K on Xiaohongshu'],
-            links: SOCIAL_LINKS,
-          },
+        period: '2026.01 - 2026.04',
+        place: 'Paper-Agent',
+        role: '多 Agent 学术调研与报告生成系统',
+        points: [
+          '基于 LangGraph + AutoGen 编排检索、分析、写作、审查与报告整合流程',
+          '构建 LlamaIndex + ChromaDB RAG 链路，支持多查询、HyDE、过滤与重排',
+          '通过分层记忆、断点恢复、SSE 进度推送和 LangSmith 追踪形成验证闭环',
         ],
-      },
-      {
-        period: '2026 – Now',
-        place: 'Indie Developer',
-        groups: [{ logo: 'zooop', sub: 'AI creation platform', link: 'https://zooop.ai/' }],
       },
     ],
   },
-  zh: {
-    title: 'Résumé',
+  en: {
+    title: 'Experience',
     entries: [
       {
-        period: '2013 – 2017',
-        place: '中山大学',
-        role: '软件工程 · 本科',
+        period: '2019.09 - 2023.06',
+        place: 'Nanjing University of Science and Technology',
+        role: 'B.Eng. in Computer Science and Technology',
+        points: ['GPA 3.56 / 4.0, top 30%', 'First- and second-class university scholarships'],
       },
       {
-        period: '2017 – 2020',
-        place: 'HOTSAR 工作室 · 上海',
-        role: '联合创始人',
-        logo: { src: `${import.meta.env.BASE_URL}images/hotsar.jpg`, alt: 'HOTSAR' },
+        period: '2024.09 - 2027.06',
+        place: 'Harbin Institute of Technology',
+        role: 'M.Eng. in Electronic Information',
+        points: ['GPA 3.72 / 4.0, top 20%', 'Second-class scholarship and outstanding student association officer'],
+      },
+      {
+        period: '2025.04 - 2025.08',
+        place: 'PolyFlow Intelligent Costing System',
+        role: 'Backend Developer · Java / Spring Boot',
         points: [
-          '联合创始人，团队人数 20+',
-          '服务客户：阿里系品牌、腾讯、网易、滴滴、华润、麦当劳…',
-          '负责：技术开发 / 创意策划 / 动画制作 / 团队管理',
+          'Built a multipart, resumable upload pipeline backed by MinIO',
+          'Stream-parsed large Excel files with Apache POI to reduce peak memory usage',
+          'Moved parsing to RabbitMQ and streamed progress through Redis Pub/Sub and WebSocket',
         ],
       },
       {
-        period: '2020 – 2025',
-        place: '坏打印机工作室 · 深圳',
-        role: '创始人',
-        logo: { src: `${import.meta.env.BASE_URL}images/bp.png`, alt: '坏打印机工作室' },
+        period: '2025.12 - 2026.03',
+        place: 'Shopee',
+        role: 'OPA Backend Engineering Intern',
         points: [
-          '创始人，团队人数 14',
-          '服务客户：王者荣耀 / 携程 / 字节 / 快手 / VIVO / 传音 / 小米…',
-          '负责：团队管理 / 创意策划 / 动画制作 / 技术开发',
+          'Designed a sharded Redis delayed queue for tens of millions of commission events',
+          'Implemented three-tier hot/cold data routing across DB, Redis and Kafka',
+          'Added dual-write scaling, reconciliation and operational controls for safe rollout',
         ],
       },
       {
-        period: '2025 – 至今',
-        place: '自媒体博主',
-        groups: [
-          {
-            heading: '小郑还挺忙',
-            logoImg: `${import.meta.env.BASE_URL}images/buzyzheng.png`,
-            sub: '科技 DIY 博主',
-            items: ['抖音 12 万 · B站 8.7 万 · 小红书 2.3 万 关注'],
-            links: SOCIAL_LINKS,
-          },
+        period: '2026.01 - 2026.04',
+        place: 'Paper-Agent',
+        role: 'Multi-agent Research and Report Generation System',
+        points: [
+          'Orchestrated retrieval, analysis, writing, review and report assembly with LangGraph and AutoGen',
+          'Built a LlamaIndex and ChromaDB RAG pipeline with multi-query, HyDE, filtering and reranking',
+          'Added layered memory, checkpoint recovery, SSE progress and LangSmith tracing',
         ],
-      },
-      {
-        period: '2026 – 至今',
-        place: '独立开发',
-        groups: [{ logo: 'zooop', sub: 'AI 创作平台', link: 'https://zooop.ai/' }],
       },
     ],
   },
 }
 
-// 履历条目依次对应 glb 里的聚焦锚点（相机停靠点），顺序须与 entries 一致。
-// 名单是唯一真源，见 data/focusPoints.ts（Scene.tsx 也从那里取）。
 const POINT_ORDER = FOCUS_POINTS
-
 const EASE = [0.22, 1, 0.36, 1]
 const containerV = {
   hidden: {},
@@ -154,68 +114,6 @@ const containerV = {
 const itemV = {
   hidden: { opacity: 0, y: 26 },
   show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE } },
-}
-
-function Group({ group }: { group: ResumeGroup }) {
-  const heading =
-    group.logo === 'zooop' ? (
-      <a
-        className="zooop-logo-link"
-        href={group.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="ZOOOP"
-      >
-        <ZooopLogo className="zooop-logo" animated />
-      </a>
-    ) : group.link ? (
-      <a className="about-link" href={group.link} target="_blank" rel="noopener noreferrer">
-        {group.heading}
-      </a>
-    ) : (
-      <span>{group.heading}</span>
-    )
-
-  return (
-    <motion.div className="tl-group" variants={itemV}>
-      <div className="tl-group-head">
-        {group.logoImg && (
-          <span className="tl-group-logo">
-            <img src={group.logoImg} alt={group.heading || ''} loading="lazy" />
-          </span>
-        )}
-        {heading}
-        {group.sub && <span className="tl-group-sub">{group.sub}</span>}
-      </div>
-      {group.items && (
-        <ul className="tl-points">
-          {group.items.map((it, i) => (
-            <li key={i}>{it}</li>
-          ))}
-        </ul>
-      )}
-      {group.links && (
-        <div className="tl-logos">
-          {group.links.map((l) => {
-            const Icon = SOCIAL_ICONS[l.id as keyof typeof SOCIAL_ICONS]
-            return (
-              <a
-                key={l.id}
-                className="tl-logo"
-                href={l.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={l.label}
-                title={l.label}
-              >
-                <Icon />
-              </a>
-            )
-          })}
-        </div>
-      )}
-    </motion.div>
-  )
 }
 
 function Entry({ entry, index }: { entry: ResumeEntry; index: number }) {
@@ -229,35 +127,21 @@ function Entry({ entry, index }: { entry: ResumeEntry; index: number }) {
       viewport={{ once: true, margin: '-12% 0px -12% 0px' }}
     >
       <motion.span className="tl-dot" variants={itemV} aria-hidden="true" />
-      {/* tl-body 包住文字内容（点保持在外做时间轴标记）：移动端可给它加卡片衬底，
-          且它紧贴内容高度，不含 tl-entry 用于排布的大 padding。
-          用普通 div（非 motion）：framer 变体经 React context 穿透它，叶子元素仍是
-          tl-entry 的直接 stagger 子级，入场动画与包裹前完全一致。 */}
       <div className="tl-body">
         <motion.div className="tl-period" variants={itemV}>
           {entry.period}
         </motion.div>
         <motion.div className="tl-head" variants={itemV}>
-          {entry.logo && (
-            <span className="tl-logo-chip">
-              <img src={entry.logo.src} alt={entry.logo.alt} loading="lazy" />
-            </span>
-          )}
           <h3 className="tl-place">{entry.place}</h3>
         </motion.div>
-        {entry.role && (
-          <motion.div className="tl-role" variants={itemV}>
-            {entry.role}
-          </motion.div>
-        )}
-        {entry.points && (
-          <motion.ul className="tl-points" variants={itemV}>
-            {entry.points.map((p, i) => (
-              <li key={i}>{p}</li>
-            ))}
-          </motion.ul>
-        )}
-        {entry.groups && entry.groups.map((g, i) => <Group key={i} group={g} />)}
+        <motion.div className="tl-role" variants={itemV}>
+          {entry.role}
+        </motion.div>
+        <motion.ul className="tl-points" variants={itemV}>
+          {entry.points.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </motion.ul>
       </div>
     </motion.div>
   )
@@ -277,8 +161,8 @@ export default function Resume({ lang }: { lang: 'en' | 'zh' }) {
         {data.title}
       </motion.h2>
       <div className="timeline">
-        {data.entries.map((e, i) => (
-          <Entry key={i} entry={e} index={i} />
+        {data.entries.map((entry, index) => (
+          <Entry key={`${entry.period}-${entry.place}`} entry={entry} index={index} />
         ))}
       </div>
     </section>

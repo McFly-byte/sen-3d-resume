@@ -1,18 +1,3 @@
-// 作品集数据（双语）。5 大板块 → 点击展开作品详情。
-// 纯数据驱动：增删板块 / 作品只改本文件，Works.jsx 仅负责渲染。
-//
-// 板块字段：
-//   id        唯一标识（用于 framer layoutId 共享元素动画）
-//   no        编号 '01'…'05'
-//   title     板块标题
-//   tagline   索引行右侧一句话
-//   items[]   扁平作品列表：{ name, meta?, tags?, link? }
-//             点击 item 弹出全屏详情，可补充可选媒体/文案字段：
-//             { image?, video?, year?, desc? }（缺省时媒体用占位、简介回退 meta/标签）
-//   groups[]  分组作品（与 items 二选一）：{ heading, items: string[] }
-//   awards[]  奖项 chip（可选）
-//   footer    底部技术/备注一行（可选）
-
 export interface WorkListItem {
   name: string
   meta?: string
@@ -53,171 +38,224 @@ export interface WorksLang {
 
 export const WORKS: Record<'zh' | 'en', WorksLang> = {
   zh: {
-    title: 'Works',
+    title: '项目与研究',
     closeLabel: '返回',
-    openLabel: '展开作品',
+    openLabel: '展开详情',
     hint: '继续下滑',
-    awardsLabel: '获奖',
-    visitLabel: '访问作品',
-    detailPlaceholder: '你的作品介绍',
-    phImageLabel: '图片 / 视频',
-    phButtonLabel: '跳转按钮',
-    countLabel: (n) => `${n} 件作品`,
+    awardsLabel: '成果',
+    visitLabel: '访问项目',
+    detailPlaceholder: '详情整理中',
+    phImageLabel: '项目媒体',
+    phButtonLabel: '项目链接',
+    countLabel: (n) => `${n} 项`,
     sections: [
       {
-        id: 'ad',
+        id: 'agent',
         no: '01',
-        title: '广告项目',
-        tagline: '坏打印机工作室',
+        title: 'AI Agent',
+        tagline: '可控、可追踪的深度研究工作流',
         items: [
-          { name: '谁在弹古琴', meta: '互动项目', slug: 'guqin' },
-          { name: '新加坡联合早报 · 校园时光机', meta: '互动项目', slug: 'time-machine' },
-          { name: '动画合集', meta: '动画', slug: 'animation-collection' },
-          { name: '其他作品', slug: 'other-works' },
+          {
+            name: 'Paper-Agent',
+            meta: '多 Agent 学术调研与报告生成',
+            tags: ['LangGraph', 'RAG', 'LangSmith'],
+            slug: 'paper-agent',
+          },
         ],
-        awards: ['虎啸奖', 'FWA', 'Awwwards'],
+        footer: '检索 · 分析 · 写作 · 审查 · 报告整合',
       },
       {
-        id: 'maker',
+        id: 'backend',
         no: '02',
-        title: '自媒体',
-        tagline: '23 万关注 ｜ 年更博主',
+        title: '后端工程',
+        tagline: '大规模事件调度与数据处理',
         items: [
           {
-            name: '我把工作室的玻璃墙改造成了游戏机',
-            meta: '1700 万 播放',
-            tags: ['B站每周必看', 'B站热搜'],
-            slug: 'glass-wall-arcade',
+            name: 'Shopee 佣金事件延迟队列',
+            meta: '后端开发实习',
+            tags: ['Redis', 'Kafka', 'Canal'],
+            slug: 'shopee-delay-queue',
           },
           {
-            name: '我把代码写入狗狗的衣服里',
-            meta: '900 万 播放',
-            tags: ['微博 / 抖音 / B站 三平台热搜榜'],
-            slug: 'dog-code-clothes',
+            name: 'PolyFlow 建材智能计价系统',
+            meta: '大文件上传与流式解析',
+            tags: ['Spring Boot', 'MinIO', 'RabbitMQ'],
+            slug: 'polyflow',
           },
-          {
-            name: '我把 Switch 放大十倍，做成了智能猫窝',
-            meta: '500 万 播放',
-            tags: ['B站每周必看'],
-            slug: 'switch-cat-house',
-          },
-          { name: '我们在80年代的红白机游戏里结婚啦！！', slug: 'retro-game-wedding' },
         ],
-        footer: '3D 建模 · 3D 打印 · PCB 设计 · 嵌入式开发 · 软件开发 · 动画包装',
+        footer: 'Java · MySQL · Redis · MQ · Docker',
       },
       {
-        id: 'product',
+        id: 'medical-imaging',
         no: '03',
-        title: '产品',
-        tagline: 'ZOOOP',
+        title: '医学影像',
+        tagline: 'DMI 超分辨率重建',
         items: [
-          { name: 'ZOOOP', meta: 'AI 原生创作平台', link: 'https://zooop.ai/', slug: 'zooop' },
+          {
+            name: 'Structure-Guided Diffusion Modeling for High-Resolution DMI',
+            meta: '第一作者 · SCI 一区在投',
+            tags: ['Diffusion', 'DMI', 'MRSI'],
+            slug: 'dmi-diffusion',
+          },
+          {
+            name: '磁共振氘代谢成像超分辨率重建方法',
+            meta: '发明人 · 专利在审',
+            tags: ['生成先验', '结构引导'],
+            slug: 'dmi-patent',
+          },
+        ],
+        footer: '扩散生成先验 · 结构引导 · 代谢成像',
+      },
+      {
+        id: 'publications',
+        no: '04',
+        title: '科研成果',
+        tagline: '软件分析与技术演化',
+        items: [
+          {
+            name: 'Dynamic Type Misuse Detection and Analysis',
+            meta: '第一作者 · CyberSciTech 2023',
+            tags: ['Python', 'Edge Device', 'EI'],
+            slug: 'dynamic-type-misuse',
+          },
+          {
+            name: 'Face Recognition Technology Evolution Path',
+            meta: '第三作者 · ICMEIM 2022',
+            tags: ['Citation Network', 'Main Path', 'EI'],
+            slug: 'face-recognition-evolution',
+          },
         ],
       },
       {
-        id: 'graphics',
-        no: '04',
-        title: '个人业余作品',
-        tagline: 'Raymarching · WebGL · Blender',
+        id: 'skills',
+        no: '05',
+        title: '技术能力',
+        tagline: '后端系统与 LLM 应用开发',
         items: [
-          { name: 'Raymarching', slug: 'raymarching' },
-          { name: 'WebGL', slug: 'webgl' },
-          { name: 'Blender', slug: 'blender' },
-          { name: '其他业余作品', slug: 'other-side-works' },
+          {
+            name: '技术栈与工程能力',
+            meta: 'Java · Python · Agent · RAG',
+            tags: ['MySQL', 'Redis', 'MCP'],
+            slug: 'technical-stack',
+          },
         ],
+        footer: '数据结构 · 网络 · 操作系统 · CET-6 542',
       },
     ],
   },
   en: {
-    title: 'Works',
+    title: 'Projects & Research',
     closeLabel: 'Back',
     openLabel: 'Explore',
     hint: 'Keep scrolling',
-    awardsLabel: 'Awards',
-    visitLabel: 'Visit site',
-    detailPlaceholder: 'Your work description',
-    phImageLabel: 'Image / Video',
-    phButtonLabel: 'Link button',
-    countLabel: (n) => `${n} works`,
+    awardsLabel: 'Outcome',
+    visitLabel: 'Visit project',
+    detailPlaceholder: 'Details in progress',
+    phImageLabel: 'Project media',
+    phButtonLabel: 'Project link',
+    countLabel: (n) => `${n} items`,
     sections: [
       {
-        id: 'ad',
+        id: 'agent',
         no: '01',
-        title: 'Advertising',
-        tagline: 'HOTSAR · Bad Printer',
+        title: 'AI Agent',
+        tagline: 'Controllable and traceable deep-research workflow',
         items: [
-          { name: 'Who’s Talking About Guqin', meta: 'Interactive', slug: 'guqin' },
-          { name: 'Lianhe Zaobao · Campus Time Machine', meta: 'Interactive', slug: 'time-machine' },
-          { name: 'Animation Reel', meta: 'Animation', slug: 'animation-collection' },
-          { name: 'Other works', slug: 'other-works' },
+          {
+            name: 'Paper-Agent',
+            meta: 'Multi-agent research and report generation',
+            tags: ['LangGraph', 'RAG', 'LangSmith'],
+            slug: 'paper-agent',
+          },
         ],
-        awards: ['Tiger Roar', 'FWA', 'Awwwards'],
+        footer: 'Retrieval · Analysis · Writing · Review · Synthesis',
       },
       {
-        id: 'maker',
+        id: 'backend',
         no: '02',
-        title: 'Content Creator',
-        tagline: '230K followers',
+        title: 'Backend Engineering',
+        tagline: 'Large-scale event scheduling and data processing',
         items: [
           {
-            name: '“I Turned the Studio’s Glass Wall into a Game Console”',
-            meta: '17M views',
-            tags: ['Bilibili Weekly Picks', 'Bilibili Trending'],
-            slug: 'glass-wall-arcade',
+            name: 'Shopee Commission Event Delay Queue',
+            meta: 'Backend engineering internship',
+            tags: ['Redis', 'Kafka', 'Canal'],
+            slug: 'shopee-delay-queue',
           },
           {
-            name: '“I Wrote Code into My Dog’s Clothes”',
-            meta: '9M views',
-            tags: ['Trending on Weibo / Douyin / Bilibili'],
-            slug: 'dog-code-clothes',
+            name: 'PolyFlow Intelligent Costing System',
+            meta: 'Large-file upload and stream parsing',
+            tags: ['Spring Boot', 'MinIO', 'RabbitMQ'],
+            slug: 'polyflow',
           },
-          {
-            name: '“I Made a 10× Switch into a Smart Cat House”',
-            meta: '5M views',
-            tags: ['Bilibili Weekly Picks'],
-            slug: 'switch-cat-house',
-          },
-          { name: '“We Got Married in an 80s Famicom Game!!”', slug: 'retro-game-wedding' },
         ],
-        footer: 'Tech: 3D modeling · 3D printing · PCB design · embedded · software · motion graphics',
+        footer: 'Java · MySQL · Redis · MQ · Docker',
       },
       {
-        id: 'product',
+        id: 'medical-imaging',
         no: '03',
-        title: 'Products',
-        tagline: 'ZOOOP',
+        title: 'Medical Imaging',
+        tagline: 'Super-resolution reconstruction for DMI',
         items: [
-          { name: 'ZOOOP', meta: 'AI-native creation platform', link: 'https://zooop.ai/', slug: 'zooop' },
+          {
+            name: 'Structure-Guided Diffusion Modeling for High-Resolution DMI',
+            meta: 'First author · under review at an SCI Q1 journal',
+            tags: ['Diffusion', 'DMI', 'MRSI'],
+            slug: 'dmi-diffusion',
+          },
+          {
+            name: 'Super-Resolution Reconstruction for Deuterium Metabolic Imaging',
+            meta: 'Inventor · patent under review',
+            tags: ['Generative Prior', 'Structure Guidance'],
+            slug: 'dmi-patent',
+          },
+        ],
+        footer: 'Diffusion prior · Structure guidance · Metabolic imaging',
+      },
+      {
+        id: 'publications',
+        no: '04',
+        title: 'Publications',
+        tagline: 'Software analysis and technology evolution',
+        items: [
+          {
+            name: 'Dynamic Type Misuse Detection and Analysis',
+            meta: 'First author · CyberSciTech 2023',
+            tags: ['Python', 'Edge Device', 'EI'],
+            slug: 'dynamic-type-misuse',
+          },
+          {
+            name: 'Face Recognition Technology Evolution Path',
+            meta: 'Third author · ICMEIM 2022',
+            tags: ['Citation Network', 'Main Path', 'EI'],
+            slug: 'face-recognition-evolution',
+          },
         ],
       },
       {
-        id: 'graphics',
-        no: '04',
-        title: 'Side Projects',
-        tagline: 'Raymarching · WebGL · Blender',
+        id: 'skills',
+        no: '05',
+        title: 'Technical Skills',
+        tagline: 'Backend systems and LLM application engineering',
         items: [
-          { name: 'Raymarching', slug: 'raymarching' },
-          { name: 'WebGL', slug: 'webgl' },
-          { name: 'Blender', slug: 'blender' },
-          { name: 'Other side projects', slug: 'other-side-works' },
+          {
+            name: 'Technology Stack',
+            meta: 'Java · Python · Agent · RAG',
+            tags: ['MySQL', 'Redis', 'MCP'],
+            slug: 'technical-stack',
+          },
         ],
+        footer: 'Data structures · Networks · Operating systems · CET-6 542',
       },
     ],
   },
 }
 
-// 板块配图（横向画廊每张卡片左侧的整高封面）。放到 public/works/covers/ 下。
-// 缺图时左栏用大编号渐变占位，放入图片后自动点亮。
-export const SECTION_COVERS: Record<string, string> = {
-  ad: `${import.meta.env.BASE_URL}works/covers/ad.jpg`,
-  maker: `${import.meta.env.BASE_URL}works/covers/maker.jpg`,
-  product: `${import.meta.env.BASE_URL}works/covers/product.jpg`,
-  graphics: `${import.meta.env.BASE_URL}works/covers/graphics.jpg`,
-}
+// 原作者的封面图片属于个人素材。第一版使用项目自带的渐变占位，后续换成刘明承自己的项目配图。
+export const SECTION_COVERS: Record<string, string> = {}
 
-// 统计一个板块的作品数（items 或 groups 求和），用于索引行 hover 显示
 export function sectionCount(section: WorkSection): number {
   if (section.items) return section.items.length
-  if (section.groups) return section.groups.reduce((n, g) => n + g.items.length, 0)
+  if (section.groups) return section.groups.reduce((count, group) => count + group.items.length, 0)
   return 0
 }

@@ -122,14 +122,17 @@ function Man2({
   const scale = 2.25
   const rotationY = 0
 
-  // mobilePullback：移动端相机沿「焦点→相机」方向拉远的倍率（1 = 不变，1.2 = 远 20%）
+  // timelinePullback：履历近景镜头统一拉远，避免普通 GLB 没有贴纸时只看到局部衣服。
+  // mobileHeroPullback / mobileTimelinePullback：移动端首页与履历阶段的额外拉远倍率。
   // mobileTimelineShift：移动端「时间轴阶段」相机水平位移，单位=视距占比（正=左移，负=右移，0=关）
   const cam = {
     damping: 0.1,
     dwell: 0.35,
     parallax: 4,
     parallaxEase: 0.1,
-    mobilePullback: 1.2,
+    timelinePullback: 4,
+    mobileHeroPullback: 1.55,
+    mobileTimelinePullback: 1.1,
     mobileTimelineShift: 0.12,
   }
 
@@ -437,19 +440,26 @@ function Man2({
         .copy(camPos.current)
         .sub(focusRef.current)
         .applyQuaternion(paraQuat.current)
-      // 移动端沿「焦点→相机」方向整体拉远：焦点屏幕位置不变，主体更小、留白更多
-      if (isMobile.current) tmpVec.current.multiplyScalar(cam.mobilePullback)
+      // 履历段把原本贴纸特写镜头拉远为人物中近景；进入作品区后平滑恢复原镜头。
+      // 移动端在此基础上再拉远少量，焦点的屏幕位置仍保持不变。
+      const timelineWeight = THREE.MathUtils.smoothstep(s, -0.8, 0.3) * (1 - smoothOff)
+      const timelinePullback = THREE.MathUtils.lerp(1, cam.timelinePullback, timelineWeight)
+      const mobilePullback = THREE.MathUtils.lerp(
+        cam.mobileHeroPullback,
+        cam.mobileTimelinePullback,
+        timelineWeight
+      )
+      tmpVec.current.multiplyScalar(timelinePullback * (isMobile.current ? mobilePullback : 1))
       tmpVec.current.add(focusRef.current)
       camera.position.copy(tmpVec.current)
       camera.quaternion.multiplyQuaternions(paraQuat.current, camQuat.current)
       // 移动端「时间轴阶段」把镜头整体左移，让主体从满宽文字后错开。
       // 权重：从 Hero 渐入(s: -0.8→0.3)、进入作品区随 smoothOff 渐出 → 无跳变。
       if (isMobile.current && cam.mobileTimelineShift !== 0) {
-        const tlWeight = THREE.MathUtils.smoothstep(s, -0.8, 0.3) * (1 - smoothOff)
-        if (tlWeight > 0) {
+        if (timelineWeight > 0) {
           // translateX 沿局部 +X（屏幕右）；取负 → 相机左移
           const dist = camera.position.distanceTo(focusRef.current)
-          camera.translateX(-dist * cam.mobileTimelineShift * tlWeight)
+          camera.translateX(-dist * cam.mobileTimelineShift * timelineWeight)
         }
       }
       if (camera.fov !== glbCam.fov) {

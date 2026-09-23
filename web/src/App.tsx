@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import * as THREE from 'three'
@@ -24,15 +24,15 @@ type Lang = 'en' | 'zh'
 
 const COPY = {
   en: {
-    title: 'About Sen',
+    title: 'Mingcheng Liu',
     paragraphs: [
-      "I'm Sen — a creative technologist living where code meets art. I spend my days around coding, creativity, playful interaction & design, and CG work. I love studying and combining skills across different fields — to create, and to explore more possibilities.",
+      'M.S. student in Electronic Information at Harbin Institute of Technology. I build reliable backend systems and LLM applications, and study structure-guided generative methods for medical imaging.',
     ],
   },
   zh: {
-    title: 'About Sen',
+    title: 'Mingcheng Liu',
     paragraphs: [
-      '我是 Sen——一个游走在代码与艺术之间的创意技术人。我常年和 Coding、创意、有趣的交互 & 设计、CG 创作等打交道，喜欢研究并组合不同领域的技能，来创造并探索更多可能性。',
+      '刘明承，哈尔滨工业大学电子信息硕士研究生。关注后端系统、LLM 应用与医学影像研究，尝试把可靠工程、智能体工作流和生成式方法连接起来。',
     ],
   },
 }
@@ -83,16 +83,8 @@ function Hero({ lang, cueOpacity }: { lang: Lang; cueOpacity: MotionValue<number
   )
 }
 
-function LangToggle({ lang, onToggle }: { lang: Lang; onToggle: () => void }) {
-  return (
-    <button className="lang-toggle" onClick={onToggle} aria-label="切换语言 / Switch language">
-      {lang === 'en' ? '中文' : 'EN'}
-    </button>
-  )
-}
-
 export default function App() {
-  const [lang, setLang] = useState<Lang>('zh')
+  const lang: Lang = 'zh'
   const { scrollY } = useScroll()
   // 作品区蒙层：以作品区顶部从视口底进入到视口中部的进度，驱动 3D 渐暗 + 模糊
   const worksRef = useRef(null)
@@ -105,13 +97,11 @@ export default function App() {
     [0, 1],
     ['rgba(8, 11, 18, 0)', 'rgba(8, 11, 18, 0.41)'] // 压暗减半（原 0.82）
   )
-  const fogBlur = useTransform(worksProgress, [0, 1], ['blur(0px)', 'blur(10px)'])
   // 滚动渐暗：离开首屏后压暗 3D 场景，保证履历文字可读
   const scrimOpacity = useTransform(scrollY, [0, 520], [0, 0.4])
   // 首屏滚动提示随之淡出
   const cueOpacity = useTransform(scrollY, [0, 160], [1, 0])
   // 首屏底部渐变底色：开始滑动后淡出
-  const heroGradientOpacity = useTransform(scrollY, [0, 240], [1, 0])
   // 磨砂右轨：进入履历区后淡入（首屏不磨砂）
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800
   const railOpacity = useTransform(scrollY, [vh * 0.5, vh * 1.1], [0, 1])
@@ -152,16 +142,6 @@ export default function App() {
       {/* 固定磨砂右轨（进入履历区淡入） */}
       <motion.div className="glass-rail" style={{ opacity: railOpacity }} aria-hidden="true" />
 
-      {/* 首屏底部渐变底色，滚动后淡出 —— 暂时注释查看效果 */}
-      {/* <motion.div
-        className="hero-gradient"
-        style={{ opacity: heroGradientOpacity }}
-        aria-hidden="true"
-      /> */}
-
-      {/* 中英切换暂时隐藏，默认中文 */}
-      {/* <LangToggle lang={lang} onToggle={() => setLang((l) => (l === 'en' ? 'zh' : 'en'))} /> */}
-
       {/* 首屏装饰：发丝内框 + 四角定位标 + 角标元数据（随滚动淡出） */}
       <motion.div className="hero-chrome" style={{ opacity: heroChromeOpacity }} aria-hidden="true">
         <div className="hero-frame" />
@@ -170,12 +150,12 @@ export default function App() {
         <span className="hero-mark bl">+</span>
         <span className="hero-mark br">+</span>
         <div className="hero-meta hm-tl">
-          <span className="hm-name">Sen Zheng 郑越升</span>
-          <span>Creative Technologist</span>
+          <span className="hm-name">刘明承 · Mingcheng Liu</span>
+          <span>Backend · Agent · Medical Imaging</span>
         </div>
-        <div className="hero-meta hm-tr">Portfolio — 2026</div>
-        <div className="hero-meta hm-bl">Code · Art · Play</div>
-        <div className="hero-meta hm-right">Based in Shenzhen</div>
+        <div className="hero-meta hm-tr">24S103360@stu.hit.edu.cn</div>
+        <div className="hero-meta hm-bl">Systems · Research · AI</div>
+        <div className="hero-meta hm-right">Harbin Institute of Technology</div>
       </motion.div>
 
       {/* 全屏胶片噪点蒙层（multiply 混合） */}
